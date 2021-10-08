@@ -1,9 +1,9 @@
 {
   "name": "correct-name-core",
   "description": "“好好打名字！”项目的核心功能包。The core features pack of The Correct Name Porject.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:HZGeek/correct-name-core.git",
+  "repository": "https://github.com/HZGeek/correct-name-core",
   "author": "JupiterJun",
   "license": "MIT",
   "dependencies": {
