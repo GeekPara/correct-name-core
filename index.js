@@ -8,22 +8,25 @@ class Cornm {
      * @returns {Cornm} Cornm实例
      */
     constructor(file) {
-        if (file === null) throw new Error('[correct-name-core] Init faild: input namelist required')
+        if (file === undefined) {
+            let err = new Error('[correct-name-core] Init faild: input namelist required')
+            err.code = 'NO_INPUT_FILE'
+            throw err
+        }
         let namelist = [];
         try {
             namelist = byLine(readFileSync(file, { encoding: 'utf8' }));
         } catch (error) {
-            throw new Error(`[correct-name-core] Init faild: can't read file "${file}"`)
+            let err = new Error(`[correct-name-core] Init faild: can't read file "${file}"`)
+            err.code = 'READ_FILE_FAILD'
+            err.file = file
+            throw err
         }
-        if (namelist.length != 0) {
-            var namepy = [];
-            for (let i of namelist) {
-                namepy.push({ Name: i, Pinyin: generatePy(i) })
-            };
-            this.db = namepy
-        } else {
-            throw new Error(`[correct-name-core] Init faild: file: "${file}" does not contain any names`)
-        }
+        var namepy = [];
+        for (let i of namelist) {
+            namepy.push({ Name: i, Pinyin: generatePy(i) })
+        };
+        this.db = namepy
     }
 
     /**
@@ -32,7 +35,11 @@ class Cornm {
      * @returns {Array<String>} 符合条件的全部人名的数组
      */
     q(pinyin) {
-        if (pinyin === null) throw new Error('[correct-name-core] Query faild: pinyin required')
+        if (pinyin === undefined) {
+            let err = new Error('[correct-name-core] Init faild: input namelist required')
+            err.code = 'NO_INPUT_PINYIN'
+            throw err
+        }
         let a = pinyin.split('');
         let query = this.db
             .filter(item => {
